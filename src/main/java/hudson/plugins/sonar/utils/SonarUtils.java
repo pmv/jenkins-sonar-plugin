@@ -79,4 +79,14 @@ public final class SonarUtils {
     }
     return null;
   }
+  
+  /**
+   * Escapes characters not found in the regex [^0-9a-zA-Z:-_\\.:]
+   * http://jira.codehaus.org/browse/SONAR-4188 - for valid character regex
+   * @param branch name to clean
+   * @return cleaned up branch name
+   */
+  public static String escapeInvalidBranchCharacters(String branchName){
+	  return branchName.replaceAll("[^0-9a-zA-Z:-_\\.:]", "_");
+  }
 }

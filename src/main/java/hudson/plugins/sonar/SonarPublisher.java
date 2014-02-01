@@ -85,6 +85,13 @@ public class SonarPublisher extends Notifier {
   private String branch;
 
   /**
+   * Optional
+   * 
+   * Indicates if the branch string specified should have invalid characters replaced with _
+   */
+  private boolean escapeBranch;
+    
+  /**
    * Optional.
    *
    * @since 1.6
@@ -144,37 +151,40 @@ public class SonarPublisher extends Notifier {
       String installationName,
       TriggersConfig triggers,
       String jobAdditionalProperties, String mavenOpts) {
-    this(installationName, null, null, triggers, jobAdditionalProperties, mavenOpts, null, null, null);
+    this(installationName, null, false, null, triggers, jobAdditionalProperties, mavenOpts, null, null, null);
   }
 
   public SonarPublisher(String installationName,
       TriggersConfig triggers,
       String jobAdditionalProperties, String mavenOpts,
       String mavenInstallationName, String rootPom) {
-    this(installationName, null, null, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, null);
+    this(installationName, null, false, null, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, null);
   }
 
   public SonarPublisher(String installationName,
       String branch,
+      boolean escapeBranch,
       String language,
       TriggersConfig triggers,
       String jobAdditionalProperties, String mavenOpts,
       String mavenInstallationName, String rootPom) {
-    this(installationName, branch, language, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, null);
+    this(installationName, branch, escapeBranch, language, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, null);
   }
 
   public SonarPublisher(String installationName,
       String branch,
+      boolean escapeBranch,
       String language,
       TriggersConfig triggers,
       String jobAdditionalProperties, String mavenOpts,
       String mavenInstallationName, String rootPom, String jdk) {
-    this(installationName, branch, language, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, jdk, null, null, false);
+    this(installationName, branch, escapeBranch, language, triggers, jobAdditionalProperties, mavenOpts, mavenInstallationName, rootPom, jdk, null, null, false);
   }
 
   @DataBoundConstructor
   public SonarPublisher(String installationName,
       String branch,
+      boolean escapeBranch,
       String language,
       TriggersConfig triggers,
       String jobAdditionalProperties, String mavenOpts,
@@ -182,6 +192,7 @@ public class SonarPublisher extends Notifier {
     super();
     this.installationName = installationName;
     this.branch = branch;
+    this.escapeBranch = escapeBranch;
     this.language = language;
     this.jdk = jdk;
     // Triggers
@@ -250,6 +261,17 @@ public class SonarPublisher extends Notifier {
     return StringUtils.trimToEmpty(language);
   }
 
+  /**
+   * @return escapeBranch
+   */
+  public boolean isEscapeBranch(){
+	  return escapeBranch;
+  }
+  
+  public void setEscapeBranch(boolean escapeBranch){
+	  this.escapeBranch = escapeBranch;
+  }  
+ 
   /**
    * @return triggers configuration
    */

@@ -92,8 +92,14 @@ public final class SonarMaven extends Maven {
     argsBuilder.appendMasked("sonar.jdbc.username", getInstallation().getDatabaseLogin());
     argsBuilder.appendMasked("sonar.jdbc.password", getInstallation().getDatabasePassword());
     argsBuilder.append("sonar.host.url", getInstallation().getServerUrl());
-
-    argsBuilder.append("sonar.branch", publisher.getBranch());
+    
+    if(publisher.isEscapeBranch()){
+    	EnvVars envVars = build.getEnvironment(listener);
+    	argsBuilder.append("sonar.branch", SonarUtils.escapeInvalidBranchCharacters(envVars.expand(publisher.getBranch())));
+    } else {
+    	argsBuilder.append("sonar.branch", publisher.getBranch());
+    }
+    
     argsBuilder.append("sonar.language", publisher.getLanguage());
 
     if (StringUtils.isNotBlank(getInstallation().getSonarLogin())) {

@@ -30,6 +30,14 @@
       <f:textbox name="sonar.branch" value="${instance.getBranch()}"/>
     </f:entry>
 
+    <f:nested>
+      <table width="100%">
+	  	<f:entry title="${%EscapeInvalidBranches}" field="escapeBranch" help="/plugin/sonar/help-escape-branch.html">
+	   		<f:checkbox />
+	  	</f:entry>
+      </table>
+    </f:nested>
+
     <f:entry title="${%Language}" description="${%LanguageDescr}" help="/plugin/sonar/help-language.html">
       <f:textbox name="sonar.language" value="${instance.getLanguage()}"/>
     </f:entry>
